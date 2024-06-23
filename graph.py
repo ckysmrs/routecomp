@@ -4,7 +4,7 @@ from collections.abc import Iterator
 
 from edge import Edge
 
-## グラフ。次数0の頂点は作成不可。
+## グラフ。次数0のノードは作成不可。
 class Graph:
     def __init__(self):
         self.edge_list: list[Edge] = []
@@ -41,8 +41,8 @@ class Graph:
     def get_edge_size(self) -> int:
         return len(self.edge_list)
 
-    ## 頂点の数を返す。
-    #  @return 頂点の数。
+    ## ノードの数を返す。
+    #  @return ノードの数。
     def get_node_size(self) -> int:
         return len(self.node_set)
 
@@ -62,11 +62,11 @@ class Graph:
                 return e
         return None
 
-    ## 指定の頂点を含む辺のリストを返す。
-    #  @param node   対象の頂点。
+    ## 指定のノードを含む辺のリストを返す。
+    #  @param node   対象のノード。
     #  @param e_list 探索する辺のリスト。
     #                指定しないときはこのグラフに含まれる辺を対象にする。
-    #  @return 指定の頂点を含む辺のリスト。
+    #  @return 指定のノードを含む辺のリスト。
     def get_edge_list_by_node(self, node: int, e_list: list[Edge] = None) -> list[Edge]:
         if e_list == None:
             e_list = self.edge_list
@@ -146,7 +146,7 @@ class Graph:
 
         return True
 
-    ## グラフが空のときtrueを返す。
+    ## グラフが空のときTrueを返す。
     #  @return グラフが空のときTrue。
     def is_empty(self) -> bool:
         return not self.edge_list
@@ -172,9 +172,9 @@ class Graph:
 
         return None
 
-    ## 指定の頂点を含んでいるかを返す。
-    #  @param node 指定の頂点。
-    #  @return 指定の頂点を含む時True。
+    ## 指定のノードを含んでいるかを返す。
+    #  @param node 指定のノード。
+    #  @return 指定のノードを含む時True。
     def contains_node(self, node: int) -> bool:
         for n in self.node_set:
             if n == node:
@@ -187,7 +187,7 @@ class Graph:
     def contains_edge(self, edge: Edge) -> bool:
         return edge in self.edge_list
 
-    ## 辺の情報から頂点のセットを再作成する。
+    ## 辺の情報からノードのセットを再作成する。
     def refresh_node_set(self) -> None:
         self.node_set.clear()
 
@@ -291,8 +291,8 @@ class Graph:
                 degree_map[node2] = 1
         return degree_map
 
-    ## 枝線(次数1のノードを含む辺)を抜き出す。
-    #  抜き出された枝線はこのグラフから無くなる。
+    ## 枝線(次数1のノードを含む辺)を抜き出し、 その枝線をこのグラフから削除する。
+    #  再帰的には処理しないので、処理後に新たに枝線が発生する可能性がある。
     #  @return 枝線の集合グラフ。
     def pick_up_branch_and_remove(self) -> 'Graph':
         degree_map: dict[int, int] = self.get_degree_map()
