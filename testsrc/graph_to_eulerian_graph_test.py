@@ -8,7 +8,7 @@ from edge import Edge
 from alias_graph import AliasGraph
 import graph_to_eulerian_graph
 
-class EulerCircuitSolverTest(unittest.TestCase):
+class GraphToEulerianGraphTest(unittest.TestCase):
     def test_make_complete_graph(self):
         # 完全グラフを作成する
         graph = AliasGraph()
