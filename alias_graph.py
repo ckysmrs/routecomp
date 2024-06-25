@@ -114,6 +114,7 @@ class AliasGraph:
     ## グラフを空にする。
     def clear(self) -> None:
         self.graph.clear()
+        self.alias_map.clear()
 
     def __eq__(self, other):
         if (other is None) or (not isinstance(other, AliasGraph)):

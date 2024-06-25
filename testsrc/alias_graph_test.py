@@ -20,6 +20,20 @@ class AliasGraphTest(unittest.TestCase):
         sut.clear()
         self.assertEqual(sut.get_edge_size(), 0)
 
+    def test_clear_alias(self):
+        # グラフを空にしたとき、エイリアス情報も消す
+        sut = AliasGraph()
+        sut.add_edge(Edge(0, 1, Decimal(1)))
+        sut.add_edge(Edge(2, 3, Decimal(2)))
+        sut.set_alias_node(1, 10)
+        sut.set_alias_node(2, 10)
+        self.assertTrue(sut.is_connected())
+
+        sut.clear()
+        sut.add_edge(Edge(0, 1, Decimal(1)))
+        sut.add_edge(Edge(2, 3, Decimal(2)))
+        self.assertFalse(sut.is_connected())
+
     def test_get_edge(self):
         # 指定した位置の辺を返す
         sut = AliasGraph()
