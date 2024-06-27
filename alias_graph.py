@@ -11,16 +11,24 @@ class AliasGraph:
         self.alias_map: dict[int, int] = dict()  # real -> aliasのマップ
 
     ## 辺を追加する。辺がNoneの場合は追加しない。
+    #  新規のノードのエイリアス情報はリセットされる。
     #  @param edge 追加する辺。
     def add_edge(self, edge: Edge) -> None:
+        if edge is None:
+            return
+
+        n1 = edge.get_node1()
+        n2 = edge.get_node2()
+        if not self.graph.contains_node(n1):
+            self.alias_map.pop(n1, None)
+        if not self.graph.contains_node(n2):
+            self.alias_map.pop(n2, None)
         self.graph.add_edge(edge)
 
     ## 辺を削除する。
     #  @param edge 削除する辺。
     def remove_edge(self, edge: Edge) -> None:
         self.graph.remove_edge(edge)
-        self.remove_alias_key(edge.get_node1())
-        self.remove_alias_key(edge.get_node2())
 
     def remove_alias_key(self, n: int) -> None:
         if not self.graph.contains_node(n):
@@ -31,8 +39,9 @@ class AliasGraph:
     def get_copy_of_nodes(self) -> set[int]:
         nodes = self.graph.get_copy_of_nodes()
         for k, v in self.alias_map.items():
-            nodes.remove(k)
-            nodes.add(v)
+            if k in nodes:
+                nodes.remove(k)
+                nodes.add(v)
         return nodes
 
     ## 辺のイテレータを返す。
@@ -173,15 +182,24 @@ class AliasGraph:
     def get_real_node_from_node(self, node: int) -> int | None:
         alias_dict = self.get_alias_dict()
         if node in alias_dict:
-            return self.graph.get_node_from_node(alias_dict[node].pop())
+            for n in alias_dict[node]:
+                if self.graph.contains_node(n):
+                    return self.graph.get_node_from_node(n)
         else:
             return self.graph.get_node_from_node(node)
 
     ## 指定のノードを含んでいるかを返す。
-    #  @param node 指定のノード。
+    #  @param node 指定のノード。オリジナルまたはエイリアス。
     #  @return 指定のノードを含む時True。
     def contains_node(self, node: int) -> bool:
-        return self.graph.contains_node(node) or node in self.alias_map.values()
+        if self.graph.contains_node(node):
+            return True
+        alias_to_original = self.get_alias_dict()
+        if node in alias_to_original:
+            for orig in alias_to_original[node]:
+                if self.graph.contains_node(orig):
+                    return True
+        return False
 
     ## 指定の辺を含んでいるかを返す。
     #  @param edge 指定の辺。

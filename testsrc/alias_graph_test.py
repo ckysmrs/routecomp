@@ -171,6 +171,20 @@ class AliasGraphTest(unittest.TestCase):
         sut.add_edge(None)
         self.assertEqual(sut.get_edge_size(), 0)
 
+    def test_add_edge_with_clean_alias(self):
+        # 新しいノードにはエイリアス情報が無い
+        sut = AliasGraph()
+        e1 = Edge(0, 1, Decimal(1))
+        sut.add_edge(e1)
+        e2 = Edge(2, 3, Decimal(2))
+        sut.add_edge(e2)
+        sut.set_alias_node(1, 10)
+        sut.set_alias_node(2, 10)
+        sut.remove_edge(e1)
+        self.assertTrue(1 in sut.alias_map)
+        sut.add_edge(e1)
+        self.assertFalse(1 in sut.alias_map)
+
     def test_remove_edge(self):
         # 辺を削除する
         sut = AliasGraph()
@@ -207,6 +221,20 @@ class AliasGraphTest(unittest.TestCase):
         self.assertTrue(sut.contains_node(1))
         self.assertTrue(sut.contains_node(2))
         self.assertFalse(sut.contains_node(3))
+
+    def test_remove_edge_keep_alias_info(self):
+        # ノードが無くなってもエイリアス情報は保持する
+        sut = AliasGraph()
+        e1 = Edge(0, 1, Decimal(1))
+        sut.add_edge(e1)
+        e2 = Edge(2, 3, Decimal(2))
+        sut.add_edge(e2)
+        sut.set_alias_node(1, 10)
+        sut.set_alias_node(2, 10)
+        self.assertTrue(1 in sut.alias_map)
+
+        sut.remove_edge(e1)
+        self.assertTrue(1 in sut.alias_map)
 
     def test_get_copy_of_nodes(self):
         # ノード一覧を返す
