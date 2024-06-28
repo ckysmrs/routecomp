@@ -111,7 +111,7 @@ class EulerianTask:
         route: list[list[int]] = eulerian_route_of_graph(graph, start_node)
         route: list[list[int]]  = [[n[0], n[1]] for n in route]
         if self.start_goal_edge is not None:
-            route = self.remove_added_edge(route)
+            route = EulerianTask.remove_added_edge(self.start_point, self.goal_point, self.node_list, route)
             graph.remove_edge(self.start_goal_edge)
         return route
 
@@ -313,11 +313,15 @@ class EulerianTask:
         print()
 
     ## オイラールートから追加したダミールートを削除する。
+    #  @param start_point ダミールートの始点のノード名。
+    #  @param goal_point ダミールートの終点のノード名。
+    #  @param node_list ノード名のリスト。
     #  @param route オイラールートのノードリスト。
     #  @return 削除後のノードリスト。
-    def remove_added_edge(self, route: list[list[int]]) -> list[list[int]]:
-        start_node: int = self.node_list.index(self.start_point)
-        goal_node: int  = self.node_list.index(self.goal_point)
+    @staticmethod
+    def remove_added_edge(start_point: str, goal_point: str, node_list: list[str], route: list[list[int]]) -> list[list[int]]:
+        start_node: int = node_list.index(start_point)
+        goal_node: int  = node_list.index(goal_point)
 
         for i in range(len(route)):
             if route[i][0] == goal_node and route[i][1] == start_node:
