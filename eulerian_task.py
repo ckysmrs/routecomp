@@ -173,7 +173,7 @@ class EulerianTask:
     def sort_and_print_edges(self, graph: AliasGraph) -> None:
         edges: list[tuple[str, str, Decimal]] = self.generate_edge_list(graph)
         EulerianTask.sort_edges(edges)
-        self.print_edges(edges)
+        EulerianTask.print_edges(edges)
 
     def generate_edge_list(self, graph: AliasGraph) -> list[tuple[str, str, Decimal]]:
         edge_list = []
@@ -209,7 +209,11 @@ class EulerianTask:
             i -= 1
         a[i + 1] = value
 
-    def print_edges(self, edges: list[tuple[str, str, Decimal]]) -> None:
+    ## エッジ情報のリストを画面に表示する。
+    #  各エッジは始点、終点、コストを空白区切りで表示する。
+    #  @param edges エッジ情報のリスト。
+    @staticmethod
+    def print_edges(edges: list[tuple[str, str, Decimal]]) -> None:
         for e in edges:
             print(f'{e[0]} {e[1]} {e[2]}')
 
