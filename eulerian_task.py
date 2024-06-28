@@ -202,22 +202,10 @@ class EulerianTask:
     def insert(self, a: list[tuple[str, str, Decimal]], index: int) -> None:
         value = a[index]
         i = index - 1
-        while (i >= 0 and self.is_smaller(value, a[i])):
+        while i >= 0 and value < a[i]:
             a[i + 1] = a[i]
             i -= 1
         a[i + 1] = value
-
-    def is_smaller(self, a: tuple[str, str, Decimal], b: tuple[str, str, Decimal]) -> bool:
-        i = 0
-        while i < len(a) - 1:
-            if a[i] < b[i]:
-                return True
-            if a[i] > b[i]:
-                return False
-            i += 1
-        if a[i] < b[i]:
-            return True
-        return False
 
     def print_edges(self, edges: list[tuple[str, str, Decimal]]) -> None:
         for e in edges:
