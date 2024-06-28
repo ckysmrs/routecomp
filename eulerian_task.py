@@ -193,13 +193,14 @@ class EulerianTask:
     #  @param edges エッジデータのリスト。
     def sort_edges(self, edges: list[tuple[str, str, Decimal]]) -> None:
         for i in range(1, len(edges)):
-            self.insert(edges, i)
+            EulerianTask.insert(edges, i)
 
     ## a[index]をa[0]～a[index - 1]の適切な位置までシフトする。
     #  前提条件: a[0]～a[index - 1]は昇順にソートされている。
     #  @param a     昇順にソートするエッジデータのリスト。
     #  @param index シフトする対象データの位置。
-    def insert(self, a: list[tuple[str, str, Decimal]], index: int) -> None:
+    @staticmethod
+    def insert(a: list[tuple[str, str, Decimal]], index: int) -> None:
         value = a[index]
         i = index - 1
         while i >= 0 and value < a[i]:
