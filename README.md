@@ -42,6 +42,9 @@ python routecomp.py データファイル
 
 \#以降はコメントになります。
 
+## 用語集
+Wikiに[用語集](https://github.com/ckysmrs/routecomp/wiki/%E7%94%A8%E8%AA%9E%E9%9B%86)があります。
+
 ## ライセンス
 本リポジトリのソースコードは[MITライセンス](http://www.opensource.org/licenses/MIT)です。
 
