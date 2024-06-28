@@ -172,7 +172,7 @@ class EulerianTask:
     #  @param graph グラフ。
     def sort_and_print_edges(self, graph: AliasGraph) -> None:
         edges: list[tuple[str, str, Decimal]] = self.generate_edge_list(graph)
-        self.sort_edges(edges)
+        EulerianTask.sort_edges(edges)
         self.print_edges(edges)
 
     def generate_edge_list(self, graph: AliasGraph) -> list[tuple[str, str, Decimal]]:
@@ -189,9 +189,10 @@ class EulerianTask:
                 break
         return edge_list
 
-    ## edges[k]の[0], [1], [2], ...の優先順位で昇順に挿入ソートする。
+    ## edgesの要素のインデックス[0], [1], [2]の優先順位でedgesを昇順に挿入ソートする。
     #  @param edges エッジデータのリスト。
-    def sort_edges(self, edges: list[tuple[str, str, Decimal]]) -> None:
+    @staticmethod
+    def sort_edges(edges: list[tuple[str, str, Decimal]]) -> None:
         for i in range(1, len(edges)):
             EulerianTask.insert(edges, i)
 
@@ -214,7 +215,7 @@ class EulerianTask:
 
     def sort_and_print_transfers(self, graph: AliasGraph) -> None:
         transfers = self.generate_transfer_list(graph)
-        self.sort_edges(transfers)
+        EulerianTask.sort_edges(transfers)
         self.print_transfers(transfers)
 
     def generate_transfer_list(self, graph: AliasGraph) -> list[tuple[str, str]]:

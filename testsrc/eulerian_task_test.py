@@ -44,3 +44,22 @@ class EulerianTaskTest(unittest.TestCase):
                ('一', '二', Decimal(2)),
                ]
         self.assertEqual(e_list, exp)
+
+    def test_sort_edges(self):
+        # エッジデータをソートする
+        e_list = [('二', '二', Decimal(1)),
+                  ('一', '一', Decimal(2)),
+                  ('一', '二', Decimal(1)),
+                  ('二', '一', Decimal(2)),
+                  ('一', '一', Decimal(1)),
+                  ('一', '二', Decimal(2)),
+                  ]
+        EulerianTask.sort_edges(e_list)
+        exp = [('一', '一', Decimal(1)),
+               ('一', '一', Decimal(2)),
+               ('一', '二', Decimal(1)),
+               ('一', '二', Decimal(2)),
+               ('二', '一', Decimal(2)),
+               ('二', '二', Decimal(1)),
+               ]
+        self.assertEqual(e_list, exp)
