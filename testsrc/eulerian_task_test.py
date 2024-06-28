@@ -129,3 +129,11 @@ class EulerianTaskTest(unittest.TestCase):
         exp = [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6]]
         act = EulerianTask.remove_added_edge(start_point, goal_point, node_list, route)
         self.assertEqual(act, exp)
+
+    def test_is_valid_node_name(self):
+        # ノード名がリストにあるかを検索
+        node_list = ['零', '壱', '弐', '参', '肆', '伍', '陸']
+        self.assertTrue(EulerianTask.is_valid_node_name('零', node_list))
+        self.assertFalse(EulerianTask.is_valid_node_name('佰', node_list))
+        self.assertFalse(EulerianTask.is_valid_node_name('', node_list))
+        self.assertFalse(EulerianTask.is_valid_node_name(None, node_list))

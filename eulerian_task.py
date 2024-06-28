@@ -136,7 +136,7 @@ class EulerianTask:
     #  @return 始点-終点間のルートをデータに追加したときTrue。
     def overwrite_start_goal_route(self, graph: AliasGraph, big_cost: Decimal) -> None:
         self.start_goal_edge = None
-        if not (self.is_valid_node_name(self.start_point) and self.is_valid_node_name(self.goal_point)):
+        if not (EulerianTask.is_valid_node_name(self.start_point, self.node_list) and EulerianTask.is_valid_node_name(self.goal_point, self.node_list)):
             return
 
         if self.start_point == self.goal_point:
@@ -147,17 +147,18 @@ class EulerianTask:
                         big_cost)
         graph.add_edge(self.start_goal_edge)
 
-    ## ノード名がデータにあればTrueを返す。
+    ## ノード名が有効のときTrueを返す。
+    #  有効とは、リストに登録されており、空文字列やNoneではないこと。
+    #  Pure。
     #  @param name ノード名。
-    #  @return     ノード名がデータにあればTrue。
-    def is_valid_node_name(self, name: str) -> bool:
+    #  @param node_list ノード名のリスト。
+    #  @return     ノード名が有効のときTrue。
+    @staticmethod
+    def is_valid_node_name(name: str, node_list: list[str]) -> bool:
         if not name:
             return False
 
-        if name in self.node_list:
-            return True
-
-        return False
+        return name in node_list
 
     ## (準)オイラーグラフを表示する。
     #  @param graph オイラーグラフ。
