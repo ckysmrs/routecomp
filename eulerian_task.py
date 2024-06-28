@@ -220,7 +220,7 @@ class EulerianTask:
     def sort_and_print_transfers(self, graph: AliasGraph) -> None:
         transfers = self.generate_transfer_list(graph)
         EulerianTask.sort_edges(transfers)
-        self.print_transfers(transfers)
+        EulerianTask.print_transfers(transfers)
 
     def generate_transfer_list(self, graph: AliasGraph) -> list[tuple[str, str]]:
         transfer_list = []
@@ -233,7 +233,11 @@ class EulerianTask:
                     transfer_list.append((self.node_list[d], self.node_list[s]))
         return transfer_list
 
-    def print_transfers(self, transfers: list[tuple[str, str]]) -> None:
+    ## 同じとみなすノードの情報のリストを画面に表示する。
+    #  各情報はノード1、ノード2、transferを空白区切りで表示する。
+    #  @param edges 同じとみなすノードの情報のリスト。
+    @staticmethod
+    def print_transfers(transfers: list[tuple[str, str]]) -> None:
         for t in transfers:
             print(f'{t[0]} {t[1]} transfer')
 
