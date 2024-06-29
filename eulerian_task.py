@@ -130,10 +130,9 @@ class EulerianTask:
                 print()
         print()
 
-    ## 始点と終点が指定されているとき、それらをつなぐコスト大のルートを追加する。
-    #  ルートを追加したとき、Trueを返す。
-    #  @param graph 対象グラフ。
-    #  @return 始点-終点間のルートをデータに追加したときTrue。
+    ## 始点と終点が指定されているとき、グラフにそれらをつなぐエッジを追加する。
+    #  @param graph グラフ。
+    #  @param big_cost 追加するエッジのコスト。
     def overwrite_start_goal_route(self, graph: AliasGraph, big_cost: Decimal) -> None:
         self.start_goal_edge = None
         if not (EulerianTask.is_valid_node_name(self.start_point, self.node_list) and EulerianTask.is_valid_node_name(self.goal_point, self.node_list)):
