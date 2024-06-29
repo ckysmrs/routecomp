@@ -5,6 +5,8 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 import unittest
 from test.support import captured_stdout
 from decimal import Decimal
+from edge import Edge
+from alias_graph import AliasGraph
 from eulerian_task import EulerianTask
 
 class EulerianTaskTest(unittest.TestCase):
@@ -188,3 +190,22 @@ class EulerianTaskTest(unittest.TestCase):
             EulerianTask.show_start_goal('', '壱', node_list)
             outputs = stdout.getvalue().splitlines()
         self.assertEqual(len(outputs), 0)
+
+    def test_generate_edge_list(self):
+        # グラフからエッジのリストを生成
+        node_list = ['零', '壱', '弐', '参', '肆', '伍']
+        graph = AliasGraph()
+        graph.add_edge(Edge(0, 2, Decimal(1)))
+        graph.add_edge(Edge(0, 5, Decimal(2)))
+        graph.add_edge(Edge(1, 3, Decimal(3)))
+        graph.add_edge(Edge(1, 4, Decimal(4)))
+        graph.add_edge(Edge(1, 5, Decimal(5)))
+        graph.add_edge(Edge(4, 5, Decimal(6)))
+        act: list[tuple[str, str, Decimal]] = EulerianTask.generate_edge_list(graph, node_list)
+        self.assertEqual(len(act), 6)
+        self.assertTrue(('弐', '零', Decimal(1)) in act)
+        self.assertTrue(('伍', '零', Decimal(2)) in act)
+        self.assertTrue(('参', '壱', Decimal(3)) in act)
+        self.assertTrue(('壱', '肆', Decimal(4)) in act)
+        self.assertTrue(('伍', '壱', Decimal(5)) in act)
+        self.assertTrue(('伍', '肆', Decimal(6)) in act)

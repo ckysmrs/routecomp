@@ -172,20 +172,26 @@ class EulerianTask:
     ## グラフのエッジをソートして一覧表示する。
     #  @param graph グラフ。
     def sort_and_print_edges(self, graph: AliasGraph) -> None:
-        edges: list[tuple[str, str, Decimal]] = self.generate_edge_list(graph)
+        edges: list[tuple[str, str, Decimal]] = EulerianTask.generate_edge_list(graph, self.node_list)
         EulerianTask.sort_edges(edges)
         EulerianTask.print_edges(edges)
 
-    def generate_edge_list(self, graph: AliasGraph) -> list[tuple[str, str, Decimal]]:
+    ## グラフに含まれるエッジを(始点ノード名, 終点ノード名, コスト)の形式でリストにして返す。
+    #  始点ノード名は終点ノード名よりも文字列比較で小さい値とする。
+    #  Pure。
+    #  @param graph グラフ。
+    #  @param node_list ノード名のリスト。
+    @staticmethod
+    def generate_edge_list(graph: AliasGraph, node_list: list[str]) -> list[tuple[str, str, Decimal]]:
         edge_list = []
         edge_ite = graph.edge_iterator()
         while True:
             try:
                 edge: Edge = next(edge_ite)
-                if self.node_list[edge.get_node1()] < self.node_list[edge.get_node2()]:
-                    edge_list.append((self.node_list[edge.get_node1()], self.node_list[edge.get_node2()], edge.get_cost()))
+                if node_list[edge.get_node1()] < node_list[edge.get_node2()]:
+                    edge_list.append((node_list[edge.get_node1()], node_list[edge.get_node2()], edge.get_cost()))
                 else:
-                    edge_list.append((self.node_list[edge.get_node2()], self.node_list[edge.get_node1()], edge.get_cost()))
+                    edge_list.append((node_list[edge.get_node2()], node_list[edge.get_node1()], edge.get_cost()))
             except StopIteration:
                 break
         return edge_list
