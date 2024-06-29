@@ -209,3 +209,23 @@ class EulerianTaskTest(unittest.TestCase):
         self.assertTrue(('壱', '肆', Decimal(4)) in act)
         self.assertTrue(('伍', '壱', Decimal(5)) in act)
         self.assertTrue(('伍', '肆', Decimal(6)) in act)
+
+    def test_generate_transfer_list(self):
+        # グラフから同じとみなすノードのリストを生成
+        node_list = ['零', '壱', '弐', '参', '肆']
+        graph = AliasGraph()
+        graph.add_edge(Edge(0, 1, Decimal(1)))
+        graph.add_edge(Edge(1, 2, Decimal(2)))
+        graph.add_edge(Edge(2, 3, Decimal(3)))
+        graph.add_edge(Edge(3, 4, Decimal(4)))
+        graph.set_alias_node(0, 10)
+        graph.set_alias_node(1, 10)
+        graph.set_alias_node(2, 11)
+        graph.set_alias_node(3, 11)
+        graph.set_alias_node(4, 11)
+        act = EulerianTask.generate_transfer_list(graph, node_list)
+        self.assertEqual(len(act), 4)
+        self.assertTrue(('壱', '零') in act)
+        self.assertTrue(('参', '弐') in act)
+        self.assertTrue(('参', '肆') in act)
+        self.assertTrue(('弐', '肆') in act)

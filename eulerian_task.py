@@ -225,19 +225,27 @@ class EulerianTask:
             print(f'{e[0]} {e[1]} {e[2]}')
 
     def sort_and_print_transfers(self, graph: AliasGraph) -> None:
-        transfers = self.generate_transfer_list(graph)
+        transfers = EulerianTask.generate_transfer_list(graph, self.node_list)
         EulerianTask.sort_edges(transfers)
         EulerianTask.print_transfers(transfers)
 
-    def generate_transfer_list(self, graph: AliasGraph) -> list[tuple[str, str]]:
+    ## グラフに含まれる同じとみなすノードを(ノード名, ノード名)の形式でリストにして返す。
+    #  A、B、Cの3つのノードを同じとみなす場合、(A, B)、(B, C)、(A, C)の3つのデータをリストに加える。
+    #  文字列比較で小さいノード名をタプルの先頭にする。
+    #  Pure。
+    #  @param graph グラフ。
+    #  @param node_list ノード名のリスト。
+    #  @return 同じとみなすノードの組み合わせのリスト。
+    @staticmethod
+    def generate_transfer_list(graph: AliasGraph, node_list: list[str]) -> list[tuple[str, str]]:
         transfer_list = []
         alias_dict: dict[int, set[int]] = graph.get_alias_dict()
         for v in alias_dict.values():
             for s, d in itertools.combinations(v, 2):
-                if self.node_list[s] < self.node_list[d]:
-                    transfer_list.append((self.node_list[s], self.node_list[d]))
+                if node_list[s] < node_list[d]:
+                    transfer_list.append((node_list[s], node_list[d]))
                 else:
-                    transfer_list.append((self.node_list[d], self.node_list[s]))
+                    transfer_list.append((node_list[d], node_list[s]))
         return transfer_list
 
     ## 同じとみなすノードの情報のリストを画面に表示する。
