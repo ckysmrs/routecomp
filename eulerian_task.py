@@ -80,7 +80,7 @@ class EulerianTask:
         if graph is None:
             return
         self.show_loaded_data(graph)
-        self.show_start_goal()
+        EulerianTask.show_start_goal(self.start_point, self.goal_point, self.node_list)
         self.overwrite_start_goal_route(graph, big_cost)
 
         try:
@@ -337,16 +337,20 @@ class EulerianTask:
         return None
 
     ## 始点と終点を表示する。
-    def show_start_goal(self) -> None:
-        if self.start_point:
-            if self.start_point in self.node_list:
-                print(f'始点: {self.start_point}', end='')
-                if self.goal_point:
-                    if self.goal_point in self.node_list:
-                        print(f'  終点: {self.goal_point}')
+    #  @param start_point ダミールートの始点のノード名。
+    #  @param goal_point ダミールートの終点のノード名。
+    #  @param node_list ノード名のリスト。
+    @staticmethod
+    def show_start_goal(start_point, goal_point, node_list) -> None:
+        if start_point:
+            if start_point in node_list:
+                print(f'始点: {start_point}', end='')
+                if goal_point:
+                    if goal_point in node_list:
+                        print(f'  終点: {goal_point}')
                     else:
-                        print(f'  \'{self.goal_point}\'が見つかりませんでした')
+                        print(f'  \'{goal_point}\'が見つかりませんでした')
                 else:
                     print()
             else:
-                print(f'\'{self.start_point}\'が見つかりませんでした')
+                print(f'\'{start_point}\'が見つかりませんでした')

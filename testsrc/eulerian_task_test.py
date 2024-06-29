@@ -3,6 +3,7 @@ import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 import unittest
+from test.support import captured_stdout
 from decimal import Decimal
 from eulerian_task import EulerianTask
 
@@ -137,3 +138,53 @@ class EulerianTaskTest(unittest.TestCase):
         self.assertFalse(EulerianTask.is_valid_node_name('佰', node_list))
         self.assertFalse(EulerianTask.is_valid_node_name('', node_list))
         self.assertFalse(EulerianTask.is_valid_node_name(None, node_list))
+
+    def test_show_start_goal_vv(self):
+        # 始点と終点の画面表示
+        # 始点も終点も有効
+        node_list = ['零', '壱']
+
+        with captured_stdout() as stdout:
+            EulerianTask.show_start_goal('零', '壱', node_list)
+            outputs = stdout.getvalue().splitlines()
+        self.assertEqual(outputs[0], '始点: 零  終点: 壱')
+
+    def test_show_start_goal_vi(self):
+        # 始点と終点の画面表示
+        # 始点は有効、終点は無効
+        node_list = ['零', '壱']
+
+        with captured_stdout() as stdout:
+            EulerianTask.show_start_goal('零', '弐', node_list)
+            outputs = stdout.getvalue().splitlines()
+        self.assertEqual(outputs[0], "始点: 零  '弐'が見つかりませんでした")
+
+    def test_show_start_goal_iv(self):
+        # 始点と終点の画面表示
+        # 始点は無効、終点は有効
+        node_list = ['零', '壱']
+
+        with captured_stdout() as stdout:
+            EulerianTask.show_start_goal('弐', '壱', node_list)
+            outputs = stdout.getvalue().splitlines()
+        self.assertEqual(outputs[0], "'弐'が見つかりませんでした")
+
+    def test_show_start_goal_vn(self):
+        # 始点と終点の画面表示
+        # 始点は有効、終点は空文字
+        node_list = ['零', '壱']
+
+        with captured_stdout() as stdout:
+            EulerianTask.show_start_goal('零', '', node_list)
+            outputs = stdout.getvalue().splitlines()
+        self.assertEqual(outputs[0], '始点: 零')
+
+    def test_show_start_goal_nv(self):
+        # 始点と終点の画面表示
+        # 始点は空文字、終点は有効
+        node_list = ['零', '壱']
+
+        with captured_stdout() as stdout:
+            EulerianTask.show_start_goal('', '壱', node_list)
+            outputs = stdout.getvalue().splitlines()
+        self.assertEqual(len(outputs), 0)
