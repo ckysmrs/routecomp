@@ -1,19 +1,19 @@
+from dataclasses import dataclass
 from decimal import Decimal
 
 ## コスト付き無向エッジ。
 #  Immutable。
+@dataclass(frozen=True)
 class Edge:
-    ## ノードとコストを指定して辺を作成する。
-    #  @param node1 ノード(0以上の整数)。
-    #  @param node2 ノード(0以上の整数)。
-    #  @param cost  コスト(正の値)。
+    node1: int  # ノード(0以上の整数)。
+    node2: int  # ノード(0以上の整数)。
+    cost: Decimal  # コスト(正の値)。
+
+    ## コンストラクタの引数チェック。
     #  @exception ValueError 引数の値が不正のとき。
-    def __init__(self, node1: int, node2: int, cost: Decimal):
-        if not self.is_valid_arguments(node1, node2, cost):
-            raise ValueError(f'Edge constructor: node = ({node1}, {node2}), cost = {cost} is invalid.')
-        self.node1: int = node1
-        self.node2: int = node2
-        self.cost: Decimal = cost
+    def __post_init__(self):
+        if not self.is_valid_arguments(self.node1, self.node2, self.cost):
+            raise ValueError(f'Edge constructor: node = ({self.node1}, {self.node2}), cost = {self.cost} is invalid.')
 
     ## 引数の値が辺の値として適性のときTrueを返す。
     #  @param node1 ノード。

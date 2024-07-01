@@ -129,3 +129,13 @@ class EdgeTest(unittest.TestCase):
         # __reprの書式確認
         sut = Edge(0, 1, Decimal('2'))
         self.assertEqual("Edge(0, 1, Decimal('2'))", repr(sut))
+
+    def test_change_var(self):
+        # インスタンス変数が変更できないことを確認
+        sut = Edge(0, 1, Decimal(2))
+        with self.assertRaises(AttributeError):
+            sut.node1 = 1
+        with self.assertRaises(AttributeError):
+            sut.node2 = 2
+        with self.assertRaises(AttributeError):
+            sut.cost = Decimal(3)
