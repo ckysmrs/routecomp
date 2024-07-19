@@ -55,6 +55,15 @@ class DijkstraTest(unittest.TestCase):
         self.assertEqual(get_shortest_length(self.g, 5, 7), 3)
         self.assertEqual(get_shortest_length(self.g, 6, 7), 1)
 
+    def test_get_shortest_length_last(self):
+        # ゴール直前に逆転するコストがある場合
+        g = AliasGraph()
+        g.add_edge(Edge(0, 1, Decimal(1)))
+        g.add_edge(Edge(0, 2, Decimal(10)))
+        g.add_edge(Edge(1, 3, Decimal(100)))
+        g.add_edge(Edge(2, 3, Decimal(1)))
+        self.assertEqual(get_shortest_length(g, 0, 3), 11)
+
     def test_get_shortest_path(self):
         path = get_shortest_path(self.g, 0, 7)
         self.assertEqual(len(path), 5)
