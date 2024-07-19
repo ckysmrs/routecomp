@@ -40,13 +40,6 @@ class DijkstraPath:
     def is_empty(self) -> bool:
         return not self.path
 
-    ## このパスの指定された位置にあるノードを削除する。
-    #  後続のノードは左に移動する(インデックス値から1を減算)。
-    #  @param index 削除されるノードのインデックス。
-    #  @return パスから削除したノード。
-    def remove(self, index: int) -> DijkstraNode:
-        return self.path.pop(index)
-
     ## このパス内にあるノードの数を返す。
     #  @return このパス内のノード数。
     def __len__(self) -> int:
