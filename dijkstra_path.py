@@ -6,7 +6,6 @@ from dijkstra_node import DijkstraNode
 class DijkstraPath:
     def __init__(self):
         self.path: list[DijkstraNode] = []
-        self.cost: Decimal = Decimal(0)
 
     ## パスの最後に指定されたノードを追加する。
     #  @param node このパスに追加されるノード。
@@ -18,16 +17,6 @@ class DijkstraPath:
     #  @param node  挿入されるノード。
     def insert(self, index: int, node: DijkstraNode) -> None:
         self.path.insert(index, node)
-
-    def calc_cost(self) -> None:
-        # パスの総コストを計算する。
-        self.cost = Decimal(0)
-        path_size: int = len(self.path)
-
-        if path_size >= 2:
-            for i in range(path_size - 1):
-                weight: Decimal = self.path[i].get_weight(self.path[i + 1].get_id())
-                self.cost += weight
 
     ## このパス内の指定された位置にあるノードを返す。
     #  @param index 返されるノードのインデックス。
@@ -43,5 +32,12 @@ class DijkstraPath:
     ## パスの総コストを返す。
     #  @return パスの総コスト。
     def get_cost(self) -> Decimal:
-        self.calc_cost()
-        return self.cost
+        cost: Decimal = Decimal(0)
+        path_size: int = len(self.path)
+
+        if path_size >= 2:
+            for i in range(path_size - 1):
+                weight: Decimal = self.path[i].get_weight(self.path[i + 1].get_id())
+                cost += weight
+
+        return cost
