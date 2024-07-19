@@ -35,11 +35,6 @@ class DijkstraPath:
     def __getitem__(self, index: int) -> DijkstraNode:
         return self.path[index]
 
-    ## パスが空の場合にTrueを返す。
-    #  @return パスが空の場合にTrue。
-    def is_empty(self) -> bool:
-        return not self.path
-
     ## このパス内にあるノードの数を返す。
     #  @return このパス内のノード数。
     def __len__(self) -> int:
