@@ -8,7 +8,7 @@ class DijkstraNode:
     #  @param id このノードのID。
     def __init__(self, id: int):
         self.id: int = id
-        self.score: Decimal = Decimal(100000)
+        self.score: Decimal = Decimal('Infinity')
         self.parent_node: 'DijkstraNode' = None
         self.edge_list: list[Edge] = []
 
