@@ -2,6 +2,7 @@ from decimal import Decimal
 
 from edge import Edge
 from alias_graph import AliasGraph
+from binary_heap import BinaryHeap
 from dijkstra_node import DijkstraNode
 from dijkstra_path import DijkstraPath
 
@@ -14,7 +15,9 @@ from dijkstra_path import DijkstraPath
 #  @return 探索結果の経路。
 def get_shortest_path(graph: AliasGraph, start_id: int, goal_id: int) -> DijkstraPath:
     node_list: list[DijkstraNode] = make_node_list(graph)
-    open_list: list[DijkstraNode] = list(node_list)
+    open_list: BinaryHeap = BinaryHeap()
+    for n in node_list:
+        open_list.insert(n.get_score(), n.get_id())
 
     start_node: DijkstraNode = DijkstraNode.get_dijkstra_node_by_id(node_list, start_id)
     goal_node: DijkstraNode  = DijkstraNode.get_dijkstra_node_by_id(node_list, goal_id)
@@ -24,14 +27,13 @@ def get_shortest_path(graph: AliasGraph, start_id: int, goal_id: int) -> Dijkstr
 
     result_path = DijkstraPath()
     if goal_node is not None:
-        while open_list:
-            target: DijkstraNode = get_target_node(open_list)
-            if target is not None:
-                open_list.remove(target)
-                if target == goal_node:
-                    open_list.clear()
-                else:
-                    target.expand(node_list, open_list)
+        while len(open_list) > 0:
+            min_id = open_list.delete_min()
+            target: DijkstraNode = DijkstraNode.get_dijkstra_node_by_id(node_list, min_id)
+            if target == goal_node:
+                open_list.clear()
+            else:
+                target.expand(node_list, open_list)
 
         if goal_node.get_parent_node() is None:
             return result_path
@@ -80,20 +82,6 @@ def contains(nodes: list[DijkstraNode], node_id: int) -> bool:
             return True
 
     return False
-
-## 展開済みノードリストからスコア最小のノードを返す。
-#  @param open_list 展開済みノードリスト。
-#  @return スコア最小のノード。
-def get_target_node(open_list: list[DijkstraNode]) -> DijkstraNode:
-    min_score: Decimal = Decimal(100000)
-    target: DijkstraNode = None
-
-    for node in open_list:
-        if node.get_score() < min_score:
-            min_score = node.get_score()
-            target = node
-
-    return target
 
 ## 指定ノード間の最小コストを返す。
 #  @param graph 探索するグラフ。

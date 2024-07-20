@@ -1,6 +1,7 @@
 from decimal import Decimal
 
 from edge import Edge
+from binary_heap import BinaryHeap
 
 ## ダイクストラ法での探索に使用するノード。
 class DijkstraNode:
@@ -15,24 +16,25 @@ class DijkstraNode:
     ## このノードから行けるノードを展開する。
     #  @param node_list  ノードリスト。
     #  @param open_list  探索中ノードリスト。
-    def expand(self, node_list: list['DijkstraNode'], open_list: list['DijkstraNode']) -> None:
+    def expand(self, node_list: list['DijkstraNode'], open_list: BinaryHeap) -> None:
         for e in self.edge_list:
             destination = self.get_destination(e, node_list)
             if destination is not None:
                 destination.open(self, self.score + e.get_cost(), open_list)
 
-        if self in open_list:
-            open_list.remove(self)
+        if open_list.contains_satellite(self.id):
+            open_list.remove(self.id)
 
     ## このノードのスコアと始点ノードを更新する。
     #  @param parent_node このノードへの始点ノード。
     #  @param new_score   このノードまでのスコア。
     #  @param open_list   探索中ノードリスト。
-    def open(self, parent_node: 'DijkstraNode', new_score: Decimal, open_list: list['DijkstraNode']) -> None:
-        if self in open_list:
+    def open(self, parent_node: 'DijkstraNode', new_score: Decimal, open_list: BinaryHeap) -> None:
+        if open_list.contains_satellite(self.id):
             if new_score < self.score:
                 self.parent_node = parent_node
                 self.score = new_score
+                open_list.change_key(self.score, self.id)
 
     ## このノードから指定の辺で行けるノードを返す。
     #  @param edge      このノードに接続された辺。
