@@ -15,40 +15,23 @@ class DijkstraNode:
     ## このノードから行けるノードを展開する。
     #  @param node_list  ノードリスト。
     #  @param open_list  探索中ノードリスト。
-    #  @param close_list 探索済みノードリスト。
-    def expand(self, node_list: list['DijkstraNode'], open_list: list['DijkstraNode'], close_list: list['DijkstraNode']) -> None:
+    def expand(self, node_list: list['DijkstraNode'], open_list: list['DijkstraNode']) -> None:
         for e in self.edge_list:
             destination = self.get_destination(e, node_list)
             if destination is not None:
-                destination.open(self, self.score + e.get_cost(), open_list, close_list)
+                destination.open(self, self.score + e.get_cost(), open_list)
 
         if self in open_list:
             open_list.remove(self)
-        close_list.append(self)
 
-    ## このノードをopenListに入れる。
+    ## このノードのスコアと始点ノードを更新する。
     #  @param parent_node このノードへの始点ノード。
     #  @param new_score   このノードまでのスコア。
     #  @param open_list   探索中ノードリスト。
-    #  @param close_list  探索済みノードリスト。
-    def open(self, parent_node: 'DijkstraNode', new_score: Decimal, open_list: list['DijkstraNode'], close_list: list['DijkstraNode']) -> None:
+    def open(self, parent_node: 'DijkstraNode', new_score: Decimal, open_list: list['DijkstraNode']) -> None:
         if self in open_list:
             if new_score < self.score:
                 self.parent_node = parent_node
-                self.score = new_score
-        elif self in close_list:
-            if new_score < self.score:
-                self.parent_node = parent_node
-                self.score = new_score
-                close_list.remove(self)
-                open_list.append(self)
-        else:
-            open_list.append(self)
-            self.parent_node = parent_node
-
-            if parent_node is None:
-                self.score = Decimal(0)
-            else:
                 self.score = new_score
 
     ## このノードから指定の辺で行けるノードを返す。

@@ -13,16 +13,14 @@ from dijkstra_path import DijkstraPath
 #  @param goal_id  探索のゴールノードのID。
 #  @return 探索結果の経路。
 def get_shortest_path(graph: AliasGraph, start_id: int, goal_id: int) -> DijkstraPath:
-    open_list: list[DijkstraNode]  = []
-    close_list: list[DijkstraNode] = []
-
     node_list: list[DijkstraNode] = make_node_list(graph)
+    open_list: list[DijkstraNode] = list(node_list)
 
     start_node: DijkstraNode = DijkstraNode.get_dijkstra_node_by_id(node_list, start_id)
     goal_node: DijkstraNode  = DijkstraNode.get_dijkstra_node_by_id(node_list, goal_id)
 
     if start_node is not None:
-        start_node.open(None, Decimal(0), open_list, close_list)
+        start_node.open(None, Decimal(0), open_list)
 
     result_path = DijkstraPath()
     if goal_node is not None:
@@ -30,11 +28,10 @@ def get_shortest_path(graph: AliasGraph, start_id: int, goal_id: int) -> Dijkstr
             target: DijkstraNode = get_target_node(open_list)
             if target is not None:
                 open_list.remove(target)
-                close_list.append(target)
                 if target == goal_node:
                     open_list.clear()
                 else:
-                    target.expand(node_list, open_list, close_list)
+                    target.expand(node_list, open_list)
 
         if goal_node.get_parent_node() is None:
             return result_path
