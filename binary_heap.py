@@ -90,3 +90,9 @@ class BinaryHeap:
         self.satellite.clear()
         self.satellite.append(0)
         self.size = 0
+
+    ## 指定されたサテライトがこのヒープに含まれているときTrueを返す。
+    #  @param satellite サテライト。
+    #  @return 指定されたサテライトがこのヒープに含まれているときTrue。
+    def contains_satellite(self, satellite: int) -> bool:
+        return satellite in self.key

@@ -81,3 +81,10 @@ class BinaryHeapTest(unittest.TestCase):
         self.assertEqual(sut.delete_min(), 6)
         self.assertEqual(sut.delete_min(), 4)
         self.assertEqual(sut.delete_min(), 3)
+
+    def test_contains_satellite(self):
+        # サテライトの存在の確認
+        sut = BinaryHeap()
+        sut.insert(Decimal('0.1'), 1)
+        self.assertTrue(sut.contains_satellite(1))
+        self.assertFalse(sut.contains_satellite(2))
