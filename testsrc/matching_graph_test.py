@@ -90,3 +90,16 @@ class MatchingGraphTest(unittest.TestCase):
                [True, False, False, False],
                [True, True, False, False],]
         self.assertEqual(sut.get_adj_mat(), exp)
+
+    def test_init(self):
+        # コンストラクタを3回(複数回)呼ぶ
+        # デフォルト引数値をリストにした動作の確認
+        sut = MatchingGraph(3, [(0, 1)])
+        self.assertEqual(sut.get_num_vertices(), 3)
+        self.assertEqual(sut.get_num_edges(), 1)
+        sut = MatchingGraph(3, [(0, 2), (1, 2)])
+        self.assertEqual(sut.get_num_vertices(), 3)
+        self.assertEqual(sut.get_num_edges(), 2)
+        sut = MatchingGraph(3)
+        self.assertEqual(sut.get_num_vertices(), 3)
+        self.assertEqual(sut.get_num_edges(), 0)
