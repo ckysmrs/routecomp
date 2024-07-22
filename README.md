@@ -42,6 +42,8 @@ python routecomp.py データファイル
 
 \#以降はコメントになります。
 
+エンコーディングはUTF-8です。
+
 ## 用語集
 Wikiに[用語集](https://github.com/ckysmrs/routecomp/wiki/%E7%94%A8%E8%AA%9E%E9%9B%86)があります。
 
