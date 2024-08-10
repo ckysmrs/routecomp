@@ -37,11 +37,6 @@ class Graph:
         for e in self.edge_list:
             yield e
 
-    ## 辺のイテレータを返す。
-    #  @return 辺のイテレータ。
-    def edge_iterator(self) -> Iterator[Edge]:
-        return iter(self.edge_list)
-
     ## 辺の数を返す。
     #  @return 辺の数。
     def get_edge_size(self) -> int:

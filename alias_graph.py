@@ -50,11 +50,6 @@ class AliasGraph:
         for e in self.graph.edge_generator():
             yield e
 
-    ## 辺のイテレータを返す。
-    #  @return 辺のイテレータ。
-    def edge_iterator(self) -> Iterator:
-        return self.graph.edge_iterator()
-
     ## 辺の数を返す。
     #  @return 辺の数。
     def get_edge_size(self) -> int:

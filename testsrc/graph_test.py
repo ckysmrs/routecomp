@@ -111,23 +111,6 @@ class GraphTest(unittest.TestCase):
         for i, e in enumerate(sut.edge_generator()):
             self.assertEqual(e, exp[i])
 
-    def test_iterator(self):
-        # 辺を追加して辺のリストを取得する
-        sut = Graph()
-
-        e1 = Edge(0, 0, Decimal('1'))
-        e2 = Edge(0, 0, Decimal('1'))
-
-        sut.add_edge(e1)
-        sut.add_edge(e2)
-
-        self.assertEqual(sut.get_edge_size(), 2)
-
-        if sut.get_edge_size() == 2:
-            ite_edge = sut.edge_iterator()
-            self.assertIs(next(ite_edge), e1)
-            self.assertIs(next(ite_edge), e2)
-
     def test_add_none(self):
         # Noneの辺は追加しない
         sut = Graph()
