@@ -71,28 +71,24 @@ def select_start_node(work_graph: AliasGraph, result: list[list[int]], start_nod
         first_edge = next(ite_list)
         return first_edge.get_node1()
 
-    ite_result = iter(result)
-    while True:
-        try:
-            alias_nodes = next(ite_result)
-            n = convert_to_alias(alias_nodes[0], work_graph)
-            m = convert_to_alias(alias_nodes[1], work_graph)
-            if work_graph.contains_node(n):
-                edge_list = work_graph.get_edge_list_by_node(n)
-                for edge in edge_list:
-                    if work_graph.get_alias_node(edge.get_node1()) == n:
-                        return edge.get_node1()
-                    if work_graph.get_alias_node(edge.get_node2()) == n:
-                        return edge.get_node2()
-        except StopIteration:
-            if work_graph.contains_node(m):
-                edge_list = work_graph.get_edge_list_by_node(m)
-                for edge in edge_list:
-                    if work_graph.get_alias_node(edge.get_node1()) == m:
-                        return edge.get_node1()
-                    if work_graph.get_alias_node(edge.get_node2()) == m:
-                        return edge.get_node2()
-            break
+    for alias_nodes in result:
+        n = convert_to_alias(alias_nodes[0], work_graph)
+        m = convert_to_alias(alias_nodes[1], work_graph)
+        if work_graph.contains_node(n):
+            edge_list = work_graph.get_edge_list_by_node(n)
+            for edge in edge_list:
+                if work_graph.get_alias_node(edge.get_node1()) == n:
+                    return edge.get_node1()
+                if work_graph.get_alias_node(edge.get_node2()) == n:
+                    return edge.get_node2()
+
+    if work_graph.contains_node(m):
+        edge_list = work_graph.get_edge_list_by_node(m)
+        for edge in edge_list:
+            if work_graph.get_alias_node(edge.get_node1()) == m:
+                return edge.get_node1()
+            if work_graph.get_alias_node(edge.get_node2()) == m:
+                return edge.get_node2()
 
     return -1
 
