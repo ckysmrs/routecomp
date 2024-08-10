@@ -166,7 +166,7 @@ class EulerianTask:
             graph.remove_edge(self.start_goal_edge)
 
         self.sort_and_print_edges(graph)
-        self.sort_and_print_transfers(graph)
+        EulerianTask.sort_and_print_transfers(graph, self.node_list)
 
     ## グラフのエッジをソートして一覧表示する。
     #  @param graph グラフ。
@@ -218,8 +218,12 @@ class EulerianTask:
         for e in edges:
             print(f'{e[0]} {e[1]} {e[2]}')
 
-    def sort_and_print_transfers(self, graph: AliasGraph) -> None:
-        transfers = EulerianTask.generate_transfer_list(graph, self.node_list)
+    ## グラフの同一とみなすノードをソートして一覧表示する。
+    #  @param graph グラフ。
+    #  @param node_list ノード名のリスト。
+    @staticmethod
+    def sort_and_print_transfers(graph: AliasGraph, node_list: list[str]) -> None:
+        transfers = EulerianTask.generate_transfer_list(graph, node_list)
         EulerianTask.sort_edges(transfers)
         EulerianTask.print_transfers(transfers)
 
