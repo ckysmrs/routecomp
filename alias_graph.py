@@ -243,15 +243,10 @@ class AliasGraph:
 
     def generate_alias_node_graph(self) -> Graph:
         convert_graph = Graph()
-        edge_ite = self.graph.edge_iterator()
-        while True:
-            try:
-                edge = next(edge_ite)
-                node1 = self.get_alias_node(edge.get_node1())
-                node2 = self.get_alias_node(edge.get_node2())
-                convert_graph.add_edge(Edge(node1, node2, Decimal('1')))
-            except StopIteration:
-                break
+        for edge in self.graph.edge_generator():
+            node1 = self.get_alias_node(edge.get_node1())
+            node2 = self.get_alias_node(edge.get_node2())
+            convert_graph.add_edge(Edge(node1, node2, Decimal('1')))
         return convert_graph
 
     ## 指定の辺が何本含まれているかを返す。
@@ -285,19 +280,14 @@ class AliasGraph:
             if degree_map[i] == 1:
                 branch_graph.add_edge(self.get_edge_list_by_node(i)[0])
 
-        e_ite = branch_graph.edge_iterator()
-        while True:
-            try:
-                e = next(e_ite)
-                node1: int = e.get_node1()
-                if node1 in self.alias_map:
-                    branch_graph.set_alias_node(node1, self.alias_map[node1])
-                node2: int = e.get_node2()
-                if node2 in self.alias_map:
-                    branch_graph.set_alias_node(node2, self.alias_map[node2])
-                self.remove_edge(e)
-            except StopIteration:
-                break
+        for e in branch_graph.edge_generator():
+            node1: int = e.get_node1()
+            if node1 in self.alias_map:
+                branch_graph.set_alias_node(node1, self.alias_map[node1])
+            node2: int = e.get_node2()
+            if node2 in self.alias_map:
+                branch_graph.set_alias_node(node2, self.alias_map[node2])
+            self.remove_edge(e)
 
         return branch_graph
 
