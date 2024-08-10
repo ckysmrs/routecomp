@@ -79,7 +79,7 @@ class EulerianTask:
         graph, big_cost, self.node_list = graph_file_loader.generate_graph_from_files(data_files)
         if graph is None:
             return
-        self.show_loaded_data(graph)
+        EulerianTask.show_loaded_data(graph, self.node_list)
         EulerianTask.show_start_goal(self.start_point, self.goal_point, self.node_list)
         self.overwrite_start_goal_route(graph, big_cost)
 
@@ -117,14 +117,16 @@ class EulerianTask:
 
     ## ノード数、エッジ数、ノードの一覧を表示する。
     #  @param graph グラフ。
-    def show_loaded_data(self, graph: AliasGraph) -> None:
+    #  @param node_list ノード名のリスト。
+    @staticmethod
+    def show_loaded_data(graph: AliasGraph, node_list: list[str]) -> None:
         print(f'ノード数: {graph.get_real_node_size()}  エッジ数: {graph.get_edge_size()}')
 
         index = 0
-        print(self.node_list[index], end='')
+        print(node_list[index], end='')
         index += 1
         while index < graph.get_real_node_size():
-            print(f', {self.node_list[index]}', end='')
+            print(f', {node_list[index]}', end='')
             index += 1
             if index % 10 == 0:
                 print()
