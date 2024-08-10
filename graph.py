@@ -1,6 +1,6 @@
 from decimal import Decimal
 from collections import deque
-from collections.abc import Iterator
+from collections.abc import Generator, Iterator
 
 from edge import Edge
 
@@ -30,6 +30,12 @@ class Graph:
     #  @return ノードの一覧のコピー。
     def get_copy_of_nodes(self) -> set[int]:
         return self.node_set.copy()
+
+    ## 辺のジェネレータを返す。
+    #  @return 辺のジェネレータ。
+    def edge_generator(self) -> Generator[Edge]:
+        for e in self.edge_list:
+            yield e
 
     ## 辺のイテレータを返す。
     #  @return 辺のイテレータ。
