@@ -17,17 +17,12 @@ def blossom(complete_graph: AliasGraph) -> AliasGraph:
 
     g = MatchingGraph(num_vertex)
     cost: list[Decimal] = [Decimal(0)] * num_edge
-    ite_edge = complete_graph.edge_iterator()
-    while True:
-        try:
-            edge: Edge = next(ite_edge)
-            u: int = tmp_to_org_map.index(complete_graph.get_alias_node(edge.get_node1()))
-            v: int = tmp_to_org_map.index(complete_graph.get_alias_node(edge.get_node2()))
-            c: Decimal = edge.get_cost()
-            g.add_edge(u, v)
-            cost[g.get_edge_index(u, v)] = c
-        except StopIteration:
-            break
+    for edge in complete_graph.edge_generator():
+        u: int = tmp_to_org_map.index(complete_graph.get_alias_node(edge.get_node1()))
+        v: int = tmp_to_org_map.index(complete_graph.get_alias_node(edge.get_node2()))
+        c: Decimal = edge.get_cost()
+        g.add_edge(u, v)
+        cost[g.get_edge_index(u, v)] = c
     m = BlossomMatching(g)
     solution: tuple[list[int], Decimal] = m.solve_minimum_cost_perfect_matching(cost)
     matching: list[int] = solution[0]
