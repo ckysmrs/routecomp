@@ -91,7 +91,7 @@ class EulerianTask:
 
         try:
             route = self.generate_euler_route(graph)
-            self.print_result(route, graph.get_total_cost(), show_route_list)
+            EulerianTask.print_result(route, graph.get_total_cost(), self.node_list, show_route_list)
         except ValueError:
             print('最終ルートの作成に失敗しました。', file=sys.stderr)
             return
@@ -272,14 +272,16 @@ class EulerianTask:
     ## オイラールートの生成結果を表示する。
     #  @param route           オイラールートのノードリスト。
     #  @param total_cost      オイラールートの総コスト。
+    #  @param node_list ノード名のリスト。
     #  @param show_route_list Trueのとき全エッジを表示。
-    def print_result(self, route: list[list[int]], total_cost: Decimal, show_route_list: bool) -> None:
+    @staticmethod
+    def print_result(route: list[list[int]], total_cost: Decimal, node_list: list[str], show_route_list: bool) -> None:
         print()
         print(f'最終エッジ数: {len(route)}')
         print(f'総コスト: {total_cost}')
         if show_route_list:
-            EulerianTask.print_all_route(route, self.node_list)
-        EulerianTask.print_euler_route(route, self.node_list)
+            EulerianTask.print_all_route(route, node_list)
+        EulerianTask.print_euler_route(route, node_list)
 
     ## オイラー回路を表示する。
     #  @param route オイラールートのノードリスト。
