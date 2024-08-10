@@ -59,7 +59,7 @@ class EulerianTask:
 
         try:
             route = self.generate_euler_route(graph)
-            self.print_eulerian_route(route)
+            EulerianTask.print_eulerian_route(route, self.node_list)
         except ValueError:
             print('ERROR: 最終ルートの作成に失敗しました。', file=sys.stderr)
             return
@@ -252,19 +252,21 @@ class EulerianTask:
 
     ## オイラー回路を表示する。
     #  @param route オイラールートのノードリスト。
-    def print_eulerian_route(self, route: list[list[int]]) -> None:
+    #  @param node_list ノード名のリスト。
+    @staticmethod
+    def print_eulerian_route(route: list[list[int]], node_list: list[str]) -> None:
         prev_from = route[0][0]
         prev_to   = route[0][1]
-        print(self.node_list[prev_from])
-        print(self.node_list[prev_to])
+        print(node_list[prev_from])
+        print(node_list[prev_to])
         index = 1
 
         while index < len(route):
             from_node = route[index][0]
             to_node   = route[index][1]
             if prev_to != from_node:
-                print(self.node_list[from_node])
-            print(self.node_list[to_node])
+                print(node_list[from_node])
+            print(node_list[to_node])
             index += 1
             prev_from = from_node
             prev_to   = to_node
