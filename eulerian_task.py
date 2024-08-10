@@ -183,16 +183,11 @@ class EulerianTask:
     @staticmethod
     def generate_edge_list(graph: AliasGraph, node_list: list[str]) -> list[tuple[str, str, Decimal]]:
         edge_list = []
-        edge_ite = graph.edge_iterator()
-        while True:
-            try:
-                edge: Edge = next(edge_ite)
-                if node_list[edge.get_node1()] < node_list[edge.get_node2()]:
-                    edge_list.append((node_list[edge.get_node1()], node_list[edge.get_node2()], edge.get_cost()))
-                else:
-                    edge_list.append((node_list[edge.get_node2()], node_list[edge.get_node1()], edge.get_cost()))
-            except StopIteration:
-                break
+        for edge in graph.edge_generator():
+            if node_list[edge.get_node1()] < node_list[edge.get_node2()]:
+                edge_list.append((node_list[edge.get_node1()], node_list[edge.get_node2()], edge.get_cost()))
+            else:
+                edge_list.append((node_list[edge.get_node2()], node_list[edge.get_node1()], edge.get_cost()))
         return edge_list
 
     ## edgesの要素のインデックス[0], [1], [2]の優先順位でedgesを昇順に挿入ソートする。
