@@ -278,7 +278,7 @@ class EulerianTask:
         print(f'最終エッジ数: {len(route)}')
         print(f'総コスト: {total_cost}')
         if show_route_list:
-            self.print_all_route(route)
+            EulerianTask.print_all_route(route, self.node_list)
         self.print_euler_route(route)
 
     ## オイラー回路を表示する。
@@ -310,14 +310,16 @@ class EulerianTask:
 
     ## 全エッジを表示する。
     #  @param route オイラールートのノードリスト。
-    def print_all_route(self, route: list[list[int]]) -> None:
+    #  @param node_list ノード名のリスト。
+    @staticmethod
+    def print_all_route(route: list[list[int]], node_list: list[str]) -> None:
         print()
         print('通過エッジ一覧:')
-        print(f'{self.node_list[route[0][0]]} - {self.node_list[route[0][1]]}')
+        print(f'{node_list[route[0][0]]} - {node_list[route[0][1]]}')
         for i in range(1, len(route)):
             if route[i][0] != route[i - 1][1]:
-                print(f'{self.node_list[route[i - 1][1]]} = {self.node_list[route[i][0]]}')
-            print(f'{self.node_list[route[i][0]]} - {self.node_list[route[i][1]]}')
+                print(f'{node_list[route[i - 1][1]]} = {node_list[route[i][0]]}')
+            print(f'{node_list[route[i][0]]} - {node_list[route[i][1]]}')
 
         print()
 
