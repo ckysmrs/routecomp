@@ -1,5 +1,5 @@
 from decimal import Decimal
-from collections.abc import Iterator
+from collections.abc import Generator, Iterator
 
 from edge import Edge
 from graph import Graph
@@ -43,6 +43,12 @@ class AliasGraph:
                 nodes.remove(k)
                 nodes.add(v)
         return nodes
+
+    ## 辺のジェネレータを返す。
+    #  @return 辺のジェネレータ。
+    def edge_generator(self) -> Generator[Edge]:
+        for e in self.graph.edge_generator():
+            yield e
 
     ## 辺のイテレータを返す。
     #  @return 辺のイテレータ。

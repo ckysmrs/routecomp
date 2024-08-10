@@ -146,6 +146,19 @@ class AliasGraphTest(unittest.TestCase):
         self.assertEqual(sut.get_real_node_size(), 4)
         self.assertEqual(sut.get_node_size(), 3)
 
+    def test_edge_generator(self):
+        # エッジのジェネレータを返す
+        sut = AliasGraph()
+
+        e1 = Edge(0, 1, Decimal('0.1'))
+        e2 = Edge(2, 3, Decimal('0.2'))
+        sut.add_edge(e1)
+        sut.add_edge(e2)
+        exp = (e1, e2)
+
+        for i, e in enumerate(sut.edge_generator()):
+            self.assertEqual(e, exp[i])
+
     def test_iterator(self):
         # 辺を追加して辺のリストを取得する
         sut = AliasGraph()
