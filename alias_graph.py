@@ -46,7 +46,7 @@ class AliasGraph:
 
     ## 辺のジェネレータを返す。
     #  @return 辺のジェネレータ。
-    def edge_generator(self) -> Generator[Edge]:
+    def edge_generator(self) -> Generator[Edge, None, None]:
         for e in self.graph.edge_generator():
             yield e
 

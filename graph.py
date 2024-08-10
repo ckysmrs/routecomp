@@ -33,7 +33,7 @@ class Graph:
 
     ## 辺のジェネレータを返す。
     #  @return 辺のジェネレータ。
-    def edge_generator(self) -> Generator[Edge]:
+    def edge_generator(self) -> Generator[Edge, None, None]:
         for e in self.edge_list:
             yield e
 
