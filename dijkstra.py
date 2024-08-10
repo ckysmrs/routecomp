@@ -48,28 +48,23 @@ def get_shortest_path(graph: AliasGraph, start_id: int, goal_id: int) -> Dijkstr
 #  @return ノードリスト。
 def make_node_list(graph: AliasGraph) -> list[DijkstraNode]:
     node_list: list[DijkstraNode] = []
-    ite_edge  = graph.edge_iterator()
-    while True:
-        try:
-            edge: Edge = next(ite_edge)
-            if not contains(node_list, graph.get_alias_node(edge.get_node1())):
-                node_list.append(DijkstraNode(graph.get_alias_node(edge.get_node1())))
-            if not contains(node_list, graph.get_alias_node(edge.get_node2())):
-                node_list.append(DijkstraNode(graph.get_alias_node(edge.get_node2())))
-            node_id: int = graph.get_alias_node(edge.get_node1())
-            dn: DijkstraNode = DijkstraNode.get_dijkstra_node_by_id(node_list, node_id)
-            if dn is not None:
-                dn.add_edge(Edge(graph.get_alias_node(edge.get_node1()),
-                            graph.get_alias_node(edge.get_node2()),
-                            edge.get_cost()))
-            node_id = graph.get_alias_node(edge.get_node2())
-            dn = DijkstraNode.get_dijkstra_node_by_id(node_list, node_id)
-            if dn is not None:
-                dn.add_edge(Edge(graph.get_alias_node(edge.get_node1()),
-                            graph.get_alias_node(edge.get_node2()),
-                            edge.get_cost()))
-        except StopIteration:
-            break
+    for edge in graph.edge_generator():
+        if not contains(node_list, graph.get_alias_node(edge.get_node1())):
+            node_list.append(DijkstraNode(graph.get_alias_node(edge.get_node1())))
+        if not contains(node_list, graph.get_alias_node(edge.get_node2())):
+            node_list.append(DijkstraNode(graph.get_alias_node(edge.get_node2())))
+        node_id: int = graph.get_alias_node(edge.get_node1())
+        dn: DijkstraNode = DijkstraNode.get_dijkstra_node_by_id(node_list, node_id)
+        if dn is not None:
+            dn.add_edge(Edge(graph.get_alias_node(edge.get_node1()),
+                        graph.get_alias_node(edge.get_node2()),
+                        edge.get_cost()))
+        node_id = graph.get_alias_node(edge.get_node2())
+        dn = DijkstraNode.get_dijkstra_node_by_id(node_list, node_id)
+        if dn is not None:
+            dn.add_edge(Edge(graph.get_alias_node(edge.get_node1()),
+                        graph.get_alias_node(edge.get_node2()),
+                        edge.get_cost()))
     return node_list
 
 ## ノードリストが指定ノードを含んでいるときTrueを返す。
