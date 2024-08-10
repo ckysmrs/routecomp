@@ -165,13 +165,15 @@ class EulerianTask:
         if self.start_goal_edge is not None:
             graph.remove_edge(self.start_goal_edge)
 
-        self.sort_and_print_edges(graph)
+        EulerianTask.sort_and_print_edges(graph, self.node_list)
         EulerianTask.sort_and_print_transfers(graph, self.node_list)
 
     ## グラフのエッジをソートして一覧表示する。
     #  @param graph グラフ。
-    def sort_and_print_edges(self, graph: AliasGraph) -> None:
-        edges: list[tuple[str, str, Decimal]] = EulerianTask.generate_edge_list(graph, self.node_list)
+    #  @param node_list ノード名のリスト。
+    @staticmethod
+    def sort_and_print_edges(graph: AliasGraph, node_list: list[str]) -> None:
+        edges: list[tuple[str, str, Decimal]] = EulerianTask.generate_edge_list(graph, node_list)
         EulerianTask.sort_edges(edges)
         EulerianTask.print_edges(edges)
 
