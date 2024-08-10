@@ -67,8 +67,8 @@ def select_start_node(work_graph: AliasGraph, result: list[list[int]], start_nod
     if not result:
         if start_node >= 0:
             return start_node
-        ite_list = work_graph.edge_iterator()
-        first_edge = next(ite_list)
+        gen_list = work_graph.edge_generator()
+        first_edge = next(gen_list)
         return first_edge.get_node1()
 
     for alias_nodes in result:
