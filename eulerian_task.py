@@ -279,15 +279,17 @@ class EulerianTask:
         print(f'総コスト: {total_cost}')
         if show_route_list:
             EulerianTask.print_all_route(route, self.node_list)
-        self.print_euler_route(route)
+        EulerianTask.print_euler_route(route, self.node_list)
 
     ## オイラー回路を表示する。
     #  @param route オイラールートのノードリスト。
-    def print_euler_route(self, route: list[list[int]]) -> None:
+    #  @param node_list ノード名のリスト。
+    @staticmethod
+    def print_euler_route(route: list[list[int]], node_list: list[str]) -> None:
         print('ルート例:')
         prev_from = route[0][0]
         prev_to   = route[0][1]
-        print(f'{self.node_list[prev_from]} - {self.node_list[prev_to]}', end='')
+        print(f'{node_list[prev_from]} - {node_list[prev_to]}', end='')
         index = 1
         num_show = 2
 
@@ -295,11 +297,11 @@ class EulerianTask:
             from_node = route[index][0]
             to_node   = route[index][1]
             if prev_to != from_node:
-                print(f' = {self.node_list[from_node]}', end='')
+                print(f' = {node_list[from_node]}', end='')
                 num_show += 1
                 if num_show % 10 == 0:
                     print()
-            print(f' - {self.node_list[to_node]}', end='')
+            print(f' - {node_list[to_node]}', end='')
             index += 1
             num_show += 1
             if num_show % 10 == 0:
