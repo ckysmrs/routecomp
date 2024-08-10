@@ -86,25 +86,20 @@ def make_complete_graph(odd_nodes: list[int], graph: AliasGraph) -> AliasGraph:
 #  @param matching 追加元のマッチング。
 #  @param graph 追加先のグラフ。
 def add_matching_to_graph(matching: AliasGraph, graph: AliasGraph) -> None:
-    ite_edge = matching.edge_iterator()
-    while True:
-        try:
-            edge: Edge  = next(ite_edge)
-            start: int = matching.get_alias_node(edge.get_node1())
-            goal: int  = matching.get_alias_node(edge.get_node2())
+    for edge in matching.edge_generator():
+        start: int = matching.get_alias_node(edge.get_node1())
+        goal: int  = matching.get_alias_node(edge.get_node2())
 
-            d_path: DijkstraPath = dijkstra.get_shortest_path(graph, start, goal)
-            node1: int = 0
-            node2: int = d_path[0].get_id()
+        d_path: DijkstraPath = dijkstra.get_shortest_path(graph, start, goal)
+        node1: int = 0
+        node2: int = d_path[0].get_id()
 
-            for i in range(1, len(d_path)):
-                node1 = node2
-                node2 = d_path[i].get_id()
-                e = graph.get_edge_by_nodes(node1, node2)
-                if e is not None:
-                    graph.add_edge(e)
-        except StopIteration:
-            break
+        for i in range(1, len(d_path)):
+            node1 = node2
+            node2 = d_path[i].get_id()
+            e = graph.get_edge_by_nodes(node1, node2)
+            if e is not None:
+                graph.add_edge(e)
 
 ## graphAの内容をgraphBに置き換える。
 #  @param graph_a グラフ。
