@@ -126,13 +126,8 @@ def restore_branch_with_duplicating(graph: AliasGraph, branch_graph_list: list[A
 #  @param initial_graph 初期データグラフ。
 def cut_extra_route(graph: AliasGraph, initial_graph: AliasGraph) -> None:
     waste_graph = AliasGraph.copy_instance(graph)
-    ite_edge = initial_graph.edge_iterator()
-    while True:
-        try:
-            edge = next(ite_edge)
-            waste_graph.remove_edge(edge)
-        except StopIteration:
-            break
+    for edge in initial_graph.edge_generator():
+        waste_graph.remove_edge(edge)
 
     while not waste_graph.is_empty():
         e = waste_graph.get_edge(0)
