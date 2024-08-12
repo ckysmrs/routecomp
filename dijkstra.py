@@ -50,13 +50,11 @@ def set_cost_to_goal(graph: AliasGraph, start_id: int, goal_id: int) -> Dijkstra
 #  @return ゴールノードを終点としたパス。
 def generate_dijkstra_path(goal: DijkstraNode) -> DijkstraPath:
     result_path = DijkstraPath()
-    if goal is not None:
-        if goal.get_parent_node() is None:
-            return result_path
-
-        result_path.add(goal)
-        while result_path[0].get_parent_node() is not None:
-            result_path.insert(0, result_path[0].get_parent_node())
+    if goal is None:
+        return result_path
+    result_path.add(goal)
+    while result_path[0].get_parent_node() is not None:
+        result_path.insert(0, result_path[0].get_parent_node())
     return result_path
 
 ## ノードリストを返す。

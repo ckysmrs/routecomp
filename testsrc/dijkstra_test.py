@@ -74,6 +74,12 @@ class DijkstraTest(unittest.TestCase):
             self.assertEqual(path[3].get_id(), 6)
             self.assertEqual(path[4].get_id(), 7)
 
+    def test_get_shortest_path_same(self):
+        # スタートとゴールが同じ経路探索
+        path = get_shortest_path(self.g, 0, 0)
+        self.assertEqual(len(path), 1)
+        self.assertEqual(path[0].get_id(), 0)
+        
     def test_make_node_list(self):
         l = make_node_list(self.g)
         self.assertEqual(len(l), 8)
