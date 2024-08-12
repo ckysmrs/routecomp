@@ -6,6 +6,7 @@ import unittest
 from decimal import Decimal
 from dijkstra import get_shortest_length
 from dijkstra import get_shortest_path
+from dijkstra import set_costs_to_goals
 from dijkstra import make_node_list
 from edge import Edge
 from alias_graph import AliasGraph
@@ -79,7 +80,14 @@ class DijkstraTest(unittest.TestCase):
         path = get_shortest_path(self.g, 0, 0)
         self.assertEqual(len(path), 1)
         self.assertEqual(path[0].get_id(), 0)
-        
+
+    def test_set_costs_to_goals(self):
+        # ダイクストラ法でゴールのコストを計算する
+        goals = set_costs_to_goals(self.g, 0, list(range(8)))
+        act = [n.get_score() for n in goals]
+        exp = [0, 2, 3, 5, 4, 5, 7, 8]
+        self.assertEqual(act, exp)
+
     def test_make_node_list(self):
         l = make_node_list(self.g)
         self.assertEqual(len(l), 8)

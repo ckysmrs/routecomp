@@ -14,36 +14,37 @@ from dijkstra_path import DijkstraPath
 #  @param goal_id  探索のゴールノードのID。
 #  @return 探索結果の経路。
 def get_shortest_path(graph: AliasGraph, start_id: int, goal_id: int) -> DijkstraPath:
-    goal_node = set_cost_to_goal(graph, start_id, goal_id)
-    return generate_dijkstra_path(goal_node)
+    goal_nodes = set_costs_to_goals(graph, start_id, [goal_id])
+    return generate_dijkstra_path(goal_nodes[0])
 
 ## スタートからゴールまでの経路のコストを探索し、ゴールノードを返す。
 #  @param graph    探索するグラフ。
 #  @param start_id 探索のスタートノードのID。
-#  @param goal_id  探索のゴールノードのID。
-#  @return ゴールノード。ゴールノードが存在しないときNone。
-def set_cost_to_goal(graph: AliasGraph, start_id: int, goal_id: int) -> DijkstraNode | None:
+#  @param goal_ids 探索のゴールノードのIDのリスト。
+#  @return ゴールノードのリスト。ゴールノードが存在しないとき要素はNone。
+def set_costs_to_goals(graph: AliasGraph, start_id: int, goal_ids: list[int]) -> list[DijkstraNode | None]:
     node_list: list[DijkstraNode] = make_node_list(graph)
     open_list: BinaryHeap = BinaryHeap()
     for n in node_list:
         open_list.insert(n.get_score(), n.get_id())
 
     start_node: DijkstraNode = DijkstraNode.get_dijkstra_node_by_id(node_list, start_id)
-    goal_node: DijkstraNode  = DijkstraNode.get_dijkstra_node_by_id(node_list, goal_id)
+    goal_nodes: list[DijkstraNode] = [DijkstraNode.get_dijkstra_node_by_id(node_list, n) for n in goal_ids]
+    targets = [n for n in goal_nodes if n is not None]
+    if not targets:
+        return goal_nodes
 
     if start_node is not None:
         start_node.open(None, Decimal(0), open_list)
 
-    if goal_node is not None:
-        while len(open_list) > 0:
-            min_id = open_list.delete_min()
-            target: DijkstraNode = DijkstraNode.get_dijkstra_node_by_id(node_list, min_id)
-            if target == goal_node:
-                open_list.clear()
-            else:
-                target.expand(node_list, open_list)
+    while targets and len(open_list) > 0:
+        min_id = open_list.delete_min()
+        target: DijkstraNode = DijkstraNode.get_dijkstra_node_by_id(node_list, min_id)
+        if target in targets:
+            targets.remove(target)
+        target.expand(node_list, open_list)
 
-    return goal_node
+    return goal_nodes
 
 ## ゴールノードを終点としてパスを生成して返す。
 #  @param goal ゴールノード。
