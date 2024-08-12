@@ -14,6 +14,15 @@ from dijkstra_path import DijkstraPath
 #  @param goal_id  探索のゴールノードのID。
 #  @return 探索結果の経路。
 def get_shortest_path(graph: AliasGraph, start_id: int, goal_id: int) -> DijkstraPath:
+    goal_node = set_cost_to_goal(graph, start_id, goal_id)
+    return generate_dijkstra_path(goal_node)
+
+## スタートからゴールまでの経路のコストを探索し、ゴールノードを返す。
+#  @param graph    探索するグラフ。
+#  @param start_id 探索のスタートノードのID。
+#  @param goal_id  探索のゴールノードのID。
+#  @return ゴールノード。ゴールノードが存在しないときNone。
+def set_cost_to_goal(graph: AliasGraph, start_id: int, goal_id: int) -> DijkstraNode | None:
     node_list: list[DijkstraNode] = make_node_list(graph)
     open_list: BinaryHeap = BinaryHeap()
     for n in node_list:
@@ -25,7 +34,6 @@ def get_shortest_path(graph: AliasGraph, start_id: int, goal_id: int) -> Dijkstr
     if start_node is not None:
         start_node.open(None, Decimal(0), open_list)
 
-    result_path = DijkstraPath()
     if goal_node is not None:
         while len(open_list) > 0:
             min_id = open_list.delete_min()
@@ -35,10 +43,18 @@ def get_shortest_path(graph: AliasGraph, start_id: int, goal_id: int) -> Dijkstr
             else:
                 target.expand(node_list, open_list)
 
-        if goal_node.get_parent_node() is None:
+    return goal_node
+
+## ゴールノードを終点としてパスを生成して返す。
+#  @param goal ゴールノード。
+#  @return ゴールノードを終点としたパス。
+def generate_dijkstra_path(goal: DijkstraNode) -> DijkstraPath:
+    result_path = DijkstraPath()
+    if goal is not None:
+        if goal.get_parent_node() is None:
             return result_path
 
-        result_path.add(goal_node)
+        result_path.add(goal)
         while result_path[0].get_parent_node() is not None:
             result_path.insert(0, result_path[0].get_parent_node())
     return result_path
