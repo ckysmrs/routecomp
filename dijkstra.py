@@ -101,3 +101,13 @@ def contains(nodes: list[DijkstraNode], node_id: int) -> bool:
 def get_shortest_length(graph: AliasGraph, start: int, goal: int) -> Decimal:
     path: DijkstraPath = get_shortest_path(graph, start, goal)
     return path.get_cost()
+
+## 指定ノード間の最小コストのリストを返す。
+#  @param graph 探索するグラフ。
+#  @param start 経路の始点。
+#  @param goal  経路の終点のリスト。
+#  @return 始点と各終点間の最小コストのリスト。
+#          出力リストのインデックスnがstartとgoals[n]間の最小コスト。
+def single_source_shortest_length(graph: AliasGraph, start: int, goals: list[int]) -> list[Decimal]:
+    goals = set_costs_to_goals(graph, start, goals)
+    return [n.get_score() for n in goals]
