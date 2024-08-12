@@ -68,18 +68,17 @@ def make_degree_even(odd_nodes: list[int], graph: AliasGraph) -> None:
     add_matching_to_graph(minimum_cost_perfect_matching, graph)
 
 ## 指定ノードの完全グラフを返す。
-#  @param odd_nodes ノードリスト。
-#  @param graph 元データのグラフ。
+#  ノード間の最短距離をコストにする。
+#  @param nodes ノードリスト。
+#  @param graph コストを参照するグラフ。
 #  @return 完全グラフ。
-def make_complete_graph(odd_nodes: list[int], graph: AliasGraph) -> AliasGraph:
+def make_complete_graph(nodes: list[int], graph: AliasGraph) -> AliasGraph:
     c_graph = AliasGraph()
 
-    for i in range(len(odd_nodes)):
-        for j in range(i + 1, len(odd_nodes)):
-            e = Edge(odd_nodes[i],
-                    odd_nodes[j],
-                    dijkstra.get_shortest_length(graph, odd_nodes[i], odd_nodes[j]))
-            c_graph.add_edge(e)
+    for i in range(len(nodes) - 1):
+        costs = dijkstra.single_source_shortest_length(graph, nodes[i], nodes[i + 1:])
+        for j in range(len(costs)):
+            c_graph.add_edge(Edge(nodes[i], nodes[i + 1 + j], costs[j]))
     return c_graph
 
 ## マッチングをグラフに追加する。
