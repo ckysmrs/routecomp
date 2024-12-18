@@ -4,7 +4,9 @@
 class MatchingGraph:
     # n is the number of vertices
     # edges is a list of pairs representing the edges (default = empty list)
-    def __init__(self, n: int = 0, edges: list[tuple[int, int]] = []):
+    def __init__(self, n: int = 0, edges: list[tuple[int, int]] = None):
+        if edges is None:
+            edges = []
         self.n: int = n  # Number of vertices
         self.m: int = 0  # Number of edges
         self.adj_mat: list[list[bool]] = [[False for _ in range(n)] for _ in range(n)]  # Adjacency matrix
